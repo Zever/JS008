@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			#parent{
+				position: relative;
+				width: 600px;
+				height: 20px;
+				background: #ccc;
+				margin-left: 200px;
+			}
+			#div1{
+				position: absolute;
+				width: 20px;
+				height: 20px;
+				background: red;
+			}
+			#div2{
+				position: relative;
+				border: 1px solid black;
+				width: 300px;
+				height: 300px;
+				overflow: hidden;
+			}
+			#div3{
+				position: absolute;
+				/*top: -20px;*/
+			}
+		</style>
+		<script>
+			window.onload=function(){
+				var oparent=document.getElementById("parent");
+				var odiv1=document.getElementById("div1");
+				var odiv2=document.getElementById('div2');
+				var odiv3=document.getElementById('div3')
+			
+				odiv1.onmousedown=function(ev){
+					var oEvent=ev||event;
+					var posx=oEvent.clientX-odiv1.offsetLeft;
+					var posy=oEvent.clientY-odiv1.offsetTop;
+					
+					//实现鼠标在整个document里面的移动都可以发生div框的移动，
+					//这样鼠标脱离div时，同样会实现div的移动
+					if(odiv1.setCapture){
+						odiv1.onmousemove=mousemove;
+						//同样在整个document里面的鼠标抬起都可以实现鼠标移动事件的释放
+						odiv1.onmouseup=mouseup;
+						//获取捕获(使其他元素的事件都集中到odiv1上，当移动odiv1时从而其他元素不会被选中)
+						  odiv1.setCapture();
+					 }else{
+						document.onmousemove=mousemove;
+						//同样在整个document里面的鼠标抬起都可以实现鼠标移动事件的释放
+						document.onmouseup=mouseup;
+					 }
+					 
+					 //鼠标移动函数
+					 function mousemove(ev){
+							var oEvent=ev||event;
+							//防止拖出页面
+							var l=oEvent.clientX-posx;
+							
+							if(l<0){
+								l=0
+							}else if(l>oparent.offsetWidth-odiv1.offsetWidth){
+								l=oparent.offsetWidth-odiv1.offsetWidth
+							}
+							odiv1.style.left=l+"px";
+							//滚动条的一个使用切入口（一个本身变化却不变的点），
+							//可以使用这个变化带动其他的不会自动变化的东西
+							var scorlls=odiv1.offsetLeft/580;
+							document.title=scorlls;
+							//活动条控制div2的大小
+							odiv3.style.top=-(odiv3.offsetHeight-odiv2.offsetHeight)*scorlls+"px";
+							 
+						}
+					 //鼠标抬起函数
+					 function mouseup(){
+					 	//当鼠标抬起事件发生，则释放鼠标移动事件
+							this.onmousemove=null;
+							//为了不产生多余的垃圾，同时释放鼠标抬起事件
+							this.onmouseup=null;
+							//释放捕获
+							if(this.setCapture){
+							   this.releaseCapture();							
+							}
+					 }
+					 
+					//解决chrome、老版本ff对空div拖拽的一个bug(出现另外一个div影子)
+					return false;
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="parent">
+			<div id="div1"></div>
+		</div>
+		<div id="div2">
+			<div id="div3">
+			10月8日是我国二十四节气中的“寒露”，是气温由凉变寒的转折点。
+
+			中央气象台8日早提示，受冷空气影响，内蒙古大部、华北等地已出现明显降温。
+			内蒙古气温基本跌至0 以下，华北大部气温跌至个位数。
+			
+			全国变温实况图。
+			
+			根据中央气象台全国变温实况图，10月7日5时至8日时，
+			内蒙古、华北地区降温可达6至10度。
+			
+			中国天气网显示，国庆期间，北方气温曾出现”前暖后冷“。10月4日之后，
+			北方曾接连收到两股冷空气影响，北方大多地区降雨降温。过去三天，
+			除了辽宁中南部一带以外，东北大部地区的日平均气温都在10 以下。省会城市中，
+			昨天早晨截至08时，哈尔滨最低气温只有-0.2 ，再次突破冰点，连续两天都是寒意十足。
+			
+			而节后的冷空气还将继续影响我国。
+			
+			据中央气象台预计，8日白天到夜间，冷空气将继续影响中东部地区，
+			长江中下游及其以北还会出现4～6 降温，局地降温幅度可达8 。不少地方气温将创下半年来新低。
+			
+			另外，中国天气网预计，东北地区气温将再下一个台阶，三个省会级城市的最高气温都在10 以下，
+			同时长春也将在9日早晨迎来冰点。在南方，重庆和南宁也将出现明显降温。其中
+			，重庆从8日开始最高气温将降至20 左右；原本酷热的南宁气温也将有所下滑，降温至30 出头的水平。
+			
+			同期比较来看，10月12日之前，北方大部地区气温比常年同期偏低，内蒙古东部、
+			东北地区气温偏低3～6 ；之后，北方地区气温呈明显上升趋势，至10月下旬初，
+			大部地区气温接近常年同期或略偏高。
+			
+			此外，中央气象台8日6时继续发布台风蓝色预警。受台风“艾利”外围环流及
+			南下冷空气共同影响，8日浙江东北部沿海、福建东南部、广东东部、台湾等地
+			的部分地区有大雨或暴雨，局部有大暴雨（100～160毫米）。
+			
+			全国降水量预报图。
+			
+			12下一页
+			上一篇：浙江遂昌山体滑坡遇难人数升至18人仍有9人失联
+			下一篇：陈水扁将出席“双十庆典”？台中监狱机动待命
+			同期比较来看，10月12日之前，北方大部地区气温比常年同期偏低，内蒙古东部、
+			东北地区气温偏低3～6 ；之后，北方地区气温呈明显上升趋势，至10月下旬初，
+			大部地区气温接近常年同期或略偏高。
+			
+			此外，中央气象台8日6时继续发布台风蓝色预警。受台风“艾利”外围环流及
+			南下冷空气共同影响，8日浙江东北部沿海、福建东南部、广东东部、台湾等地
+			的部分地区有大雨或暴雨，局部有大暴雨（100～160毫米）。
+			
+			全国降水量预报图。
+			
+			12下一页
+			上一篇：浙江遂昌山体滑坡遇难人数升至18人仍有9人失联
+			下一篇：陈水扁将出席“双十庆典”？台中监狱机动待命
+            </div>
+		</div>
+	</body>
+</html>
